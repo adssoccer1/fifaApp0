@@ -1,4 +1,4 @@
-from flask import Flask, render_template, request
+from flask import Flask, render_template, request, jsonify
 
 
 import pandas as pd
@@ -35,7 +35,12 @@ def loadDataset(filename):
 				
 			tempTrainingExample.append(dataset[x][3].lower())
 			tempTrainingExample.append(dataset[x][3])
-
+			tempTrainingExample.append(dataset[x][9])#overall rating 
+			tempTrainingExample.append(dataset[x][10])#potential
+			tempTrainingExample.append(dataset[x][8]) #club
+			tempTrainingExample.append(dataset[x][7]) #nation
+			tempTrainingExample.append(dataset[x][4]) # age
+			tempTrainingExample.append(dataset[x][1]) #sofifa page. 
 			#append entire row to return 2d
 			trainingSet.append(tempTrainingExample)
 	return trainingSet
@@ -44,7 +49,7 @@ def loadDataset(filename):
 #used by getNeighbors to get the "similarity score" aka cost function
 def euclideanDistance(instance1, instance2):
 	distance = 0
-	for x in range(len(instance1)-2):  #stop the range to avoid the last two names at the end of the row
+	for x in range(len(instance1)-8):  #stop the range to avoid the last 8 names at the end of the row
 		distance += pow((instance1[x] - instance2[x]), 2)
 	return math.sqrt(distance)
 
@@ -121,7 +126,17 @@ def index():
 	#convert rows to names, use row 47 to get the capitalized names 
 	namesNeighbors = []
 	for i in range(len(neighbors)):
-		namesNeighbors.append(neighbors[i][47])
-	#print(namesNeighbors)
+		tempDict = {}
+		tempDict['name'] = neighbors[i][47].strip()
+		tempDict['overall'] = neighbors[i][48].strip()
+		namesNeighbors.append(tempDict)
 
+		#namesNeighbors.append(neighbors[i][47].strip())
+		#namesNeighbors.append(neighbors[i][48].strip())
+
+
+	#print(namesNeighbors)
+	print(namesNeighbors)
+	str = jsonify(namesNeighbors)
+	print(str)
 	return render_template("index.html", words=namesNeighbors)
