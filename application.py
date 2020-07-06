@@ -68,6 +68,7 @@ def getNeighbors(trainingSet, testInstance, k):
 		counter -= 1
 		if(counter == -1):
 			return neighbors
+		player[0].append(player[1])	
 		neighbors.append(player[0])
 	return neighbors
 
@@ -129,6 +130,17 @@ def index():
 		tempDict = {}
 		tempDict['name'] = neighbors[i][47].strip()
 		tempDict['overall'] = neighbors[i][48].strip()
+		tempDict['potential'] = neighbors[i][49].strip()
+		tempDict['club'] = neighbors[i][50].strip()
+		tempDict['nation'] = neighbors[i][51].strip()
+		tempDict['age'] = neighbors[i][52].strip()
+		tempDict['link'] = neighbors[i][53].strip()
+
+		score = neighbors[i][54]
+		score = (((score - 100) * (100 - 1) / (0 - 100))) + 1
+		print(score)
+		tempDict['score'] = score
+
 		namesNeighbors.append(tempDict)
 
 		#namesNeighbors.append(neighbors[i][47].strip())

@@ -3,8 +3,8 @@
 
 	<main>
 		<!-- Search form -->
-		<form action="/" method="GET">
-	        <input autocomplete="off" autofocus name="q" placeholder="Enter a Player's Name" type="text" maxlength="25">
+		<form id="searchForm" action="/" method="GET">
+	        <input id="searchInput" autocomplete="off" autofocus name="q" placeholder="Messi" type="text" maxlength="25">
 	        <input type="submit" value="Search">
 		</form>
 		{%if playerNotFound %}
@@ -16,7 +16,12 @@
 		<div class="players">
 			<p class="player">Similar players include:</p>
 				{% for word in words %}
-					<div class="player">{{ word.name }}</div>
+					<div class="player">
+						<p>{{ word.name }}</p>
+						<p class="playerInfo">Overall: {{ word.overall }} &nbsp &nbsp Pot: {{ word.potential }} &nbsp &nbsp Age: {{word.age}}</p>
+						<p class="playerInfo">Club: {{word.club }} &nbsp &nbsp Nationality: {{ word.nation}}</p>
+						<p> Similarity score: {{word.score}} %</p>
+					</div>
 				{% endfor %}
 		</div>
         {% endif %}
@@ -25,4 +30,16 @@
 	<footer class="info">
 		<p>Learn more about how the K-nearest-neighbors model works to find the 10 most similar players: <a href="#">here </a></p> 
 	</footer>
+
+	<script>
+		const formPlaceHolder = document.querySelector("#searchInput");
+		const form = document.querySelector("#searchForm");
+
+
+		form.addEventListener("submit", () => {
+			console.log("find");
+			// do something when the button is clicked.
+			formPlaceHolder.placeholder="formPlaceHolder".value;
+		});
+	</script>
 {% endblock %}
