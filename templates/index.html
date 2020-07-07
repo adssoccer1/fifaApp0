@@ -24,22 +24,19 @@
 					</div>
 				{% endfor %}
 		</div>
-        {% endif %}
+		{% endif %}
+		
+		<!-- change the placeholder to the user's last search -->
+		{% if lastUserSearch|length %}
+			<script>
+				const textInputBox = document.querySelector("#searchInput");
+				textInputBox.placeholder = "{{ lastUserSearch }}";
+			</script>
+		{% endif %}
 	</main>
 
 	<footer class="info">
 		<p>Learn more about how the K-nearest-neighbors model works to find the 10 most similar players: <a href="#">here </a></p> 
 	</footer>
 
-	<script>
-		const formPlaceHolder = document.querySelector("#searchInput");
-		const form = document.querySelector("#searchForm");
-
-
-		form.addEventListener("submit", () => {
-			console.log("find");
-			// do something when the button is clicked.
-			formPlaceHolder.placeholder="formPlaceHolder".value;
-		});
-	</script>
 {% endblock %}

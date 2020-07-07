@@ -91,7 +91,7 @@ def findPlayerInstance(trainingSet, name):
 def index():
 	
 	words = request.args.get("q")
-
+	exactUserInput = words
 	#if user has not entered anything then just return the page. 
 	#print(words , " shling")
 	if words is None: 
@@ -119,7 +119,7 @@ def index():
 
 	#if player not found then instance == -1. 
 	if(instance == -1):
-		return render_template("index.html", playerNotFound=True)
+		return render_template("index.html", playerNotFound=True, lastUserSearch=exactUserInput)
 
 	#get the k nearest neighbors.
 	neighbors = getNeighbors(dataSet, dataSet[instance], 10)
@@ -149,6 +149,4 @@ def index():
 
 	#print(namesNeighbors)
 	print(namesNeighbors)
-	str = jsonify(namesNeighbors)
-	print(str)
-	return render_template("index.html", words=namesNeighbors)
+	return render_template("index.html", words=namesNeighbors, lastUserSearch=exactUserInput)
