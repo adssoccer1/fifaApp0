@@ -150,3 +150,13 @@ def index():
 	#print(namesNeighbors)
 	print(namesNeighbors)
 	return render_template("index.html", words=namesNeighbors, lastUserSearch=exactUserInput)
+
+
+@app.route("/linear-regression")
+def linearRegression():
+	return render_template("linear-regression.html")
+
+
+@app.route("/about")
+def about(): 
+	return render_template("about.html")
