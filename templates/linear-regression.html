@@ -1,7 +1,47 @@
 {% extends "layout.html" %}
 
 {% block body %}
-<main>
-    <h2> Under Construction </h2>
-</main>
+    <main>
+        <!-- Search form -->
+        <form id="searchForm" action="/linear-regression" method="GET">
+            <input id="searchInput" autocomplete="off" autofocus name="q" placeholder="Messi" type="text" maxlength="25">
+            <input type="submit" value="Search">
+        </form>
+  
+    {%if playerNotFound %}
+		<p> Your input did not match a player in our database :/ </p> 
+		<p>Try searching by their last name only :) </p>	
+    {% endif %}
+
+    {% if playerStats %}
+        
+        <div class="players">
+            <div class="player">
+                <p>{{ playerStats.name}}</p>
+                <p class="playerInfo">Fifa's Overall: {{ playerStats.overall }} &nbsp &nbsp Fifa's Pot: {{ playerStats.potential }} &nbsp &nbsp Age: {{playerStats.age}}</p>
+                <p class="playerInfo">Club: {{playerStats.club }} &nbsp &nbsp Nationality: {{ playerStats.nation}}</p>
+                <p> Our Overall: {{ predOverall}} &nbsp &nbsp Our Potential: {{predPotential}} </p>
+            </div>
+        </div>
+
+    {% endif %}
+    </main>
+
+    {% if playerStats %}
+	<footer class="info">
+		<p>Learn more about how the Linear regression model works to find our take on {{ playerStats.name }}'s Overall and Potential: <a href="#">here </a></p> 
+    </footer>
+    {% else %}
+    <footer class="info">
+		<p>Learn more about how the Linear regression model works to find our take on player Overall and Potential: <a href="#">here </a></p> 
+    </footer>
+    {% endif %}
+
+    <!-- change the placeholder to the user's last search -->
+	{% if lastUserSearch|length %}
+        <script>
+            const textInputBox = document.querySelector("#searchInput");
+            textInputBox.placeholder = "{{ lastUserSearch }}";
+        </script>
+    {% endif %}
 {% endblock %}

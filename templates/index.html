@@ -35,8 +35,14 @@
 		{% endif %}
 	</main>
 
+	{% if words %}
 	<footer class="info">
-		<p>Learn more about how the K-nearest-neighbors model works to find the 10 most similar players: <a href="#">here </a></p> 
-	</footer>
+		<p>Learn more about how the Linear regression model works to find our take on {{ words[0].name }}'s Overall and Potential: <a href="#">here </a></p> 
+    </footer>
+    {% else %}
+    <footer class="info">
+		<p>Learn more about how the Linear regression model works to find our take on player Overall and Potential: <a href="#">here </a></p> 
+    </footer>
+    {% endif %}
 
 {% endblock %}

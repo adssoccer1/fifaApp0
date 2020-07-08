@@ -1,5 +1,6 @@
 from flask import Flask, render_template, request, jsonify
 
+from linearRegression import initLinearRegModelOverall
 
 import pandas as pd
 import numpy as np
@@ -84,8 +85,7 @@ def findPlayerInstance(trainingSet, name):
 
 
 
-
-
+""" Routes below """
 
 @app.route("/")
 def index():
@@ -114,6 +114,7 @@ def index():
 
 	#instance should be -1 if player not found, or the players index
 	#in the dataSet if found. 
+	print(dataSet[0])
 	instance = findPlayerInstance(dataSet, player)
 	#print(instance) 
 
@@ -148,13 +149,54 @@ def index():
 
 
 	#print(namesNeighbors)
-	print(namesNeighbors)
+	#print(namesNeighbors)
 	return render_template("index.html", words=namesNeighbors, lastUserSearch=exactUserInput)
 
 
 @app.route("/linear-regression")
 def linearRegression():
-	return render_template("linear-regression.html")
+
+	words = request.args.get("q")
+
+	if words is None:
+		return render_template("linear-regression.html")
+
+	exactUserInput = words
+	player = words.lower()
+
+	print(words, " word from lr request ")
+	dataSet = loadDataset("players_20.csv")
+	instance = findPlayerInstance(dataSet, player)
+	print("instance from lr request", instance)
+	if instance == -1:
+		return render_template("linear-regression.html", playerNotFound=True, lastUserSearch=exactUserInput)
+
+
+	results = initLinearRegModelOverall(dataSet, instance)
+	print(results)
+	predictionOverall = results[0] + 5
+	predictionPotential = results[1] + 5
+
+	predictionOverall= str(round(predictionOverall, 2))
+	predictionPotential= str(round(predictionPotential, 2))
+
+
+	print("prediction from lr request ", predictionOverall)
+	print("potentail from lr request ", predictionPotential)
+
+	#get the players row in the dataSet and pass it to the model
+
+	playerStats = {}
+	playerStats['name'] = dataSet[instance][47].strip()
+	playerStats['overall'] = dataSet[instance][48].strip()
+	playerStats['potential'] = dataSet[instance][49].strip()
+	playerStats['club'] = dataSet[instance][50].strip()
+	playerStats['nation'] = dataSet[instance][51].strip()
+	playerStats['age'] = dataSet[instance][52].strip()
+	playerStats['link'] = dataSet[instance][53].strip()
+
+	return render_template("linear-regression.html", predOverall=predictionOverall, predPotential=predictionPotential, 
+	playerStats=playerStats, lastUserSearch=exactUserInput )
 
 
 @app.route("/about")
