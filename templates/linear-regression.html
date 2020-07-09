@@ -7,7 +7,8 @@
             <input id="searchInput" autocomplete="off" autofocus name="q" placeholder="Messi" type="text" maxlength="25">
             <input type="submit" value="Search">
         </form>
-  
+        <p id="loading"></p>
+
     {%if playerNotFound %}
 		<p> Your input did not match a player in our database :/ </p> 
 		<p>Try searching by their last name only :) </p>	
@@ -43,6 +44,11 @@
         <script>
             const textInputBox = document.querySelector("#searchInput");
             textInputBox.placeholder = "{{ lastUserSearch }}";
+
+            function load(){
+					document.querySelector("#loading").innerHTML = "loading...";
+			}
         </script>
+        
     {% endif %}
 {% endblock %}
